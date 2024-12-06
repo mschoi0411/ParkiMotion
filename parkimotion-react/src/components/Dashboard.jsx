@@ -168,9 +168,9 @@ function Dashboard({ token }) {
     <div className="dashboard-container">
       {/* 사이드 바 */}
       <div className="sidebar">
-        <h2>환자 정보</h2>
+        <h2 id="name">환자 정보</h2>
         {patientData ? (
-          <div>
+          <div id="info">
             <p><strong>ID:</strong> {patientData.id}</p>
             <p><strong>이름:</strong> {patientData.name}</p>
             <p><strong>성별:</strong> {patientData.gender === 'M' ? '남성' : '여성'}</p>
@@ -183,12 +183,14 @@ function Dashboard({ token }) {
 
         {/* 발성 운동 데이터 다운로드 */}
         <div className="vocal-exercises">
-        <h2>발성 운동 데이터 다운로드</h2>
-        {vocalExercises.map((exercise) => (
-          <button key={exercise.endpoint} onClick={() => handleDownload(exercise.endpoint, exercise.name)}>
-            {exercise.name}
-          </button>
-        ))}
+          <h2>발성 운동 데이터 다운</h2>
+          <div id="down">
+          {vocalExercises.map((exercise) => (
+            <button id= 'btn-down' key={exercise.endpoint} onClick={() => handleDownload(exercise.endpoint, exercise.name)}>
+              {exercise.name}
+            </button>
+          ))}
+          </div>
         </div>
 
       </div>
@@ -197,12 +199,12 @@ function Dashboard({ token }) {
 
       {/*1번째 손 터치 슬라이드 */}
       <div className="main-panel">
-        <h1>걷기 운동</h1>
+        <h2 id="name">걷기 운동</h2>
         {current && (
           <div className="walking-group">
             <h2>데이터 ID: {current.id}</h2>
-            <p>걸음걸이 수 변화: {stepChange.difference} ({stepChange.percentage}%)</p>
-            <p>속도 변화: {speedChange.difference.toFixed(2)} m/m ({speedChange.percentage}%)</p>
+            <p><strong>걸음걸이 수 변화:</strong> {stepChange.difference} ({stepChange.percentage}%)</p>
+            <p><strong>속도 변화:</strong> {speedChange.difference.toFixed(2)} m/m ({speedChange.percentage}%)</p>
 
             <div className="thermometer">
               {/* 걸음 변화 바 */}
@@ -228,10 +230,10 @@ function Dashboard({ token }) {
               <p><strong>현재 속도:</strong> {current.speed.toFixed(2)} m/m</p>
             </div>
             <div className="navigation-buttons">
-              <button onClick={handleFirst} disabled={currentIndex <= 1}>처음</button>
-              <button onClick={handlePrevious} disabled={currentIndex <= 1}>이전</button>
-              <button onClick={handleNext} disabled={currentIndex === walkingData.length - 1}>다음</button>
-              <button onClick={handleLast} disabled={currentIndex === walkingData.length - 1}>마지막</button>
+              <button onClick={handleFirst} disabled={currentIndex <= 1}>{"<<"}</button>
+              <button onClick={handlePrevious} disabled={currentIndex <= 1}>{"<"}</button>
+              <button onClick={handleNext} disabled={currentIndex === walkingData.length - 1}>{">"}</button>
+              <button onClick={handleLast} disabled={currentIndex === walkingData.length - 1}>{">>"}</button>
         </div>
 
           </div>
@@ -334,7 +336,7 @@ function Dashboard({ token }) {
       </div>
       {/* 2번째 손 터치 슬라이드 */}
       <div className='dashboard2'>
-      <h1>손가락 운동</h1>
+      <h2 id="name">손가락 운동</h2>
         <div className="finger-chart">
           <h2>양손별 터치변화 추이</h2>
             <Line
@@ -472,7 +474,7 @@ function Dashboard({ token }) {
       {/* 3번째 눈깜빡임 슬라이드 */}
       {/* 눈 깜빡임 데이터 그래프 */}
       <div className="dashboard3">
-        <h1>눈 깜빡임</h1>
+        <h2 id="name">눈 깜빡임</h2>
         <div className='blink-chart'>
         <h2>눈 깜빡임 데이터</h2>
         <Line

@@ -1,10 +1,13 @@
 body, html {
+  background-image: url('/image/background.jpg');
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
   overflow-x: hidden; /* 가로 스크롤 방지 */
   background-color: #f7f9fc; /* 페이지 전체 배경색 */
+  background-size: cover; /* 배경 이미지가 화면을 덮도록 크기 조정 */
+  background-position: center center; /* 배경 이미지의 위치를 중앙으로 설정 */
 }
 
 .dashboard-container {
@@ -12,50 +15,99 @@ body, html {
   flex-wrap: wrap;
   flex-direction: row; /* 항목을 수평으로 정렬 */
   font-family: Arial, sans-serif;
-  background-color: #f7f9fc;
+  background-color: #f7f9fc00;
   color: #2c3e50;
   height: 100vh;
+  width: 100vw;
   justify-content: space-between;
-  gap: 20px;
-  padding: 20px;
+  gap: 10px;
+  padding: 25px;
 }
 
 /* 사이드 바 */
 .sidebar {
-  flex: 1 1 20%;
+  flex: 1;
   max-width: 20%;
   width: 25%;
   padding: 15px;
-  background-color: #f8f9fa;
-  border-right: 1px solid #ddd;
-  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.2); /* 투명한 흰색 */
+  backdrop-filter: blur(15px); /* 배경 흐림 효과 */
+  -webkit-backdrop-filter: blur(15px); /* 크로스 브라우징을 위한 설정 */
+  /* border-right: 1px solid #0000005d; */
+  border-radius: 30px 0px 0px 0px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar h2 {
-  font-size: 1.5rem;
-  margin-bottom: 20px;
+  font-size: 1.4rem;
+  margin: 10px;
+  color: #ffffffe1; /* 흰색 글씨 */
+}
+
+#name {
+  color: #ffffffe1; /* 흰색 글씨 */
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+#info {
+  margin-top: 20px;
+  margin-bottom: 45px;
+  background-color: #ffffff;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#down {
+  margin-top: 20px;
+  margin-bottom: 45px;
+  background-color: #ffffff;
+  padding: 11px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar p {
   font-size: 1rem;
   margin: 5px 0;
+  margin-left: 10px;
+}
+
+#btn-down {
+  color: #ffffffeb; /* 흰색 글씨 */
+  font-size: 0.86rem;
+  background-color: #293948;
+  width: 100px;
+  margin: 2px;
+  margin-left: 8px;
+  border-radius: 12px;
+  border: 2px solid transparent; /* 초기 테두리는 투명 */
+  transition: border-color 0.3s ease; /* 테두리 색상 변화에 애니메이션 적용 */
+}
+
+#btn-down:hover {
+  background-color: #34495e;
+  border-color: #ffffff7b; /* 마우스를 올렸을 때 테두리 색상 (예: 토마토색) */
 }
 
 /* 메인 */
 .main-panel {
+  flex: 1;
   width: 25%; /* Adjust this percentage based on layout */
   padding: 20px;
-  background: linear-gradient(to right, #f7f8fa, #eef1f5);
-  border-radius: 8px;
+ background-color: rgba(0, 0, 0, 0.2); /* 투명한 흰색 */
+  backdrop-filter: blur(15px); /* 배경 흐림 효과 */  /* 크로스 브라우징을 위한 설정 */
+  /* background: linear-gradient(to right, #f7f8fa, #eef1f5); */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
 }
 
 .walking-group {
-  margin-bottom: 30px;
+  /* margin-bottom: 30px; */
   padding: 20px;
   background-color: #ffffff;
   border: 1px solid #ddd;
@@ -64,9 +116,8 @@ body, html {
 }
 
 .walking-group h2 {
-  font-size: 1.5rem;
-  margin-bottom: 10px;
-  color: #34495e;
+  font-size: 1.4rem;
+  margin-bottom: 20px;
 }
 
 .thermometer {
@@ -87,7 +138,7 @@ body, html {
 }
 
 .thermometer-bar.green {
-  background-color: #2ecc71;
+  background-color: #2eca6f;
 }
 
 .thermometer-bar.red {
@@ -101,17 +152,16 @@ body, html {
 
 .navigation-buttons {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   margin-top: 20px;
 }
 
 .navigation-buttons button {
   padding: 10px 20px;
   font-size: 1rem;
-  border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
-  background-color: #2c3e50;
+  background-color: #293948;
   color: white;
   transition: background-color 0.3s ease;
 }
@@ -123,10 +173,11 @@ body, html {
 
 .navigation-buttons button:not(:disabled):hover {
   background-color: #34495e;
+  border-color: #ffffff7b; /* 마우스를 올렸을 때 테두리 색상 (예: 토마토색) */
 }
 
 .chart-container {
-  margin-top: 40px;
+  margin-top: 20px;
   background-color: #ffffff;
   padding: 20px;
   border-radius: 10px;
@@ -140,15 +191,13 @@ body, html {
 }
 
 .finger-chart {
-  margin-top: 20px;
+  /* margin-top: 20px; */
   width: 100%;
   background-color: #ffffff;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-
-
 
 .chart-container canvas {
   max-width: 100%; /* 그래프가 컨테이너 너비를 넘지 않도록 설정 */
@@ -160,20 +209,23 @@ body, html {
 }
 
 .dashboard2 {
+  flex: 1;
   width: 25%; /* Adjust this percentage based on layout */
   padding: 20px;
-  background: linear-gradient(to right, #f7f8fa, #eef1f5);
-  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.2); /* 투명한 흰색 */
+  backdrop-filter: blur(15px); /* 배경 흐림 효과 */ /* 크로스 브라우징을 위한 설정 */
+  /* background: linear-gradient(to right, #f7f8fa, #eef1f5); */
+  /* border-radius: 8px; */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
 }
 
 .dashboard2 h2 {
   font-size: 1.4rem;
   font-weight: 600;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 .dashboard2 p {
@@ -183,19 +235,24 @@ body, html {
 }
 
 .dashboard3 {
+  flex: 1;
   width: 25%; /* Adjust this percentage based on layout */
   padding: 20px;
-  background: linear-gradient(to right, #f7f8fa, #eef1f5);
-  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.2); /* 투명한 흰색 */
+  backdrop-filter: blur(15px); /* 배경 흐림 효과 */ /*   크로스 브라우징을 위한 설정 */
+  /* background: linear-gradient(to right, #f7f8fa, #eef1f5);
+  border-radius: 8px; */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  border-radius: 0px 30px 0px 0px ;
+  gap: 10px;
 }
+
 .dashboard3 h2 {
   font-size: 1.4rem;
   font-weight: 600;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 .dashboard3 p {
@@ -203,8 +260,9 @@ body, html {
   line-height: 1.5;
   color: #333;
 }
+
 .blink-chart {
-  margin-top: 20px;
+  /* margin-top: 20px; */
   width: 100%;
   background-color: #ffffff;
   padding: 20px;

@@ -34,7 +34,7 @@ function Page1({ setToken }) {
   return (
     <div className="page1-container">
       <div className="info-card">
-        <h1>ParkiMotion</h1>
+        <h1 id="teamname">ParkiMotion</h1>
         <p className="subtitle"><strong>정보디자인프로그래밍 1조</strong></p>
         <p className="course">
           <strong>무하마드 이르판 나즈미</strong><br />
