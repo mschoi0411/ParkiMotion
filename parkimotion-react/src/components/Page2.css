@@ -1,18 +1,27 @@
 .page2-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  background: #f9f9f9;
-  font-family: 'Arial', sans-serif;
+  background-color: #89a8b245; /* 투명한 흰색 */
+  backdrop-filter: blur(15px); /* 배경 흐림 효과 */
+  -webkit-backdrop-filter: blur(8px); /* 크로스 브라우징을 위한 설정 */
+  border-radius: 30px; /* 둥근 모서리 */
+  padding: 40px 30px; /* 카드 내부 여백 */
+  width: 360px; /* 고정된 너비 */
+  max-width: 400px; /* 최대 너비 제한 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.page2-container:hover {
+  transform: translateY(-10px); /* 호버 시 이동 효과 */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* 호버 시 그림자 */
 }
 
 /* 제목 스타일 */
-h1 {
-  font-size: 2rem;
-  color: #333;
-  margin-bottom: 30px;
+.search-name {
+  font-size: 2.4rem; /* 제목 크기 */
+  color: #000000; /* 진한 회색 */
+  margin-bottom: 20px;
+  word-break: keep-all; /* 단어가 끊기지 않도록 설정 */
 }
 
 /* 검색 섹션 */
@@ -23,10 +32,11 @@ h1 {
 }
 
 .search-input {
-  width: 300px;
+  width: 230px;
   padding: 12px 20px;
   font-size: 1rem;
   border: 2px solid #cccccc;
+  background-color: #cccccc;
   border-radius: 30px;
   outline: none;
   margin-right: 10px;
@@ -34,12 +44,12 @@ h1 {
 }
 
 .search-input:focus {
-  border-color: #3498db;
-  box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+  border-color: #d3d3d3;
+  box-shadow: 0 0 5px rgba(212, 212, 212, 0.5);
 }
 
 .search-button {
-  background-color: rgba(52, 152, 219, 0.8);
+  background-color: rgba(204, 204, 204, 0.8);
   color: white;
   padding: 12px 15px;
   border: none;
@@ -50,7 +60,7 @@ h1 {
 }
 
 .search-button:hover {
-  background-color: rgba(41, 128, 185, 0.9);
+  background-color: rgba(55, 55, 55, 0.9);
   transform: scale(1.1); /* 버튼 크기 확대 */
 }
 
