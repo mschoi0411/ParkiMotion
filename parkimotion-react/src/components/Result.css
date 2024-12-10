@@ -1,0 +1,30 @@
+.result-container {
+  padding: 20px;
+  background-color: #f0f4f8; /* 부드러운 배경 */
+  color: #333; /* 텍스트 기본 색상 */
+  font-family: 'Arial', sans-serif;
+}
+
+.result-title {
+  font-size: 2.5rem;
+  text-align: center;
+  color: #2c3e50; /* 진한 색상 */
+  margin-bottom: 30px;
+}
+
+.result-section-title {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  color: #34495e; /* 섹션 제목 색상 */
+}
+
+.result-item {
+  font-size: 1rem;
+  margin: 5px 0;
+  color: #444; /* 일반 텍스트 색상 */
+}
+
+.result-empty {
+  font-size: 1rem;
+  color: #999; /* 데이터가 없을 때 텍스트 색상 */
+}

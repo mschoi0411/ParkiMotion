@@ -32,17 +32,24 @@ function Page1({ setToken }) {
   };
 
   return (
-    <div className="page1-container">
-      <div className="info-card">
-        <h1>ParkiMotion</h1>
-        <p className="subtitle"><strong>정보디자인프로그래밍 1조</strong></p>
-        <p className="course">
-          <strong>무하마드 이르판 나즈미</strong><br />
-          <strong>손호성 정유경 최민석 허연욱</strong>
-        </p>
-        <button onClick={handleConnect} className="connect-button">Connect</button>
-      </div>
+<div className="page1-container">
+  <div className="info-card">
+    <div className="info-content">
+    <p className="subtitle"><strong>Information Design and Programm Team1</strong></p>
+      <h1 id="teamname">ParkiMotion</h1>
+      <p className="course">
+        <strong>무하마드 이르판 나즈미</strong><br />
+        <strong>손호성 정유경 최민석 허연욱</strong>
+      </p>
+      <button onClick={handleConnect} className="connect-button">Connect</button>
+      <p className="explain"><strong>서버에 접속하여 파킨슨 병 환자의 운동 기록을 확인하세요</strong>
+      </p>
     </div>
+    <div className="info-image">
+      <img src= "/image/image1.jpg" alt="Team Illustration" />
+    </div>
+  </div>
+</div>
   );
 }
 

@@ -21,12 +21,12 @@ function Page2({ token }) {
 
     try {
       const response = await fetch(`https://kwhcclab.com:20757/api/users/${patientId}`, {
-        headers: { "X-Auth-Token": token },
+        headers: { 'X-Auth-Token': token },
       });
 
       if (response.ok) {
         const data = await response.json();
-        setPatientData(data); // 환자 데이터 저장
+        setPatientData(data);
       } else if (response.status === 401) {
         alert('인증에 실패했습니다. 다시 로그인해주세요.');
         navigate('/');
@@ -39,9 +39,9 @@ function Page2({ token }) {
     }
   };
 
-  const handleExerciseClick = (exercise) => {
+  const handleDashboardClick = () => {
     if (patientData) {
-      navigate(`/${exercise}`, { state: { patientId, patientData } });
+      navigate('/dashboard', { state: { patientId, patientData } });
     } else {
       alert('먼저 환자 정보를 검색해주세요.');
     }
@@ -49,19 +49,23 @@ function Page2({ token }) {
 
   return (
     <div className="page2-container">
-      <h1>Exercise Record Search</h1>
-      <div className="search-container">
-        <input
-          type="text"
-          placeholder="환자 ID를 입력해주세요"
-          className="search-input"
-          value={patientId}
-          onChange={(e) => setPatientId(e.target.value)}
-        />
-        <button className="search-button" onClick={handleSearch}>
-          <span role="img" aria-label="search">🔍</span>
-        </button>
-      </div>
+      <div className="search-card">
+      <div className="search-content">
+        <h1 className="search-name">환자 검색</h1>
+          <div className="search-container">
+            <div className="search-wrapper">
+              <input
+                type="text"
+                placeholder="환자 ID를 입력해주세요"
+                className="search-input"
+                value={patientId}
+                onChange={(e) => setPatientId(e.target.value)}
+              />
+              <button className="search-button" onClick={handleSearch}>
+                <span role="img" aria-label="search">🔍</span>
+              </button>
+            </div>
+          </div>
 
       {patientData && (
         <div className="patient-info">
@@ -74,21 +78,16 @@ function Page2({ token }) {
         </div>
       )}
 
-      <div className="button-container">
-        <div className="button-item" onClick={() => handleExerciseClick('eyes')}>
-          <div className="button-icon">👀</div>
-          <p>Eyes</p>
+      {patientData && (
+        <button className="go-dashbord" onClick={handleDashboardClick}>대시보드 보기</button>
+      )}
         </div>
-        <div className="button-item" onClick={() => handleExerciseClick('hands')}>
-          <div className="button-icon">✋</div>
-          <p>Hands</p>
-        </div>
-        <div className="button-item" onClick={() => handleExerciseClick('walking')}>
-          <div className="button-icon">🚶‍♂️</div>
-          <p>Walking</p>
+          <div className="search-image">
+          <img src= "/image/image2.jpg" alt="Team Illustration" />
         </div>
       </div>
     </div>
+    
   );
 }
 
