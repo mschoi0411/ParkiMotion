@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './Dashboard.css';
-import { Line } from 'react-chartjs-2';
+import { Line, Scatter } from 'react-chartjs-2';
+import annotationPlugin from 'chartjs-plugin-annotation';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -13,19 +14,22 @@ import {
   Legend,
 } from 'chart.js';
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, annotationPlugin);
 
 function Dashboard({ token }) {
   const location = useLocation();
   const navigate = useNavigate();
-  const { patientId } = location.state || {};
+  const initialPatientId = location.state?.patientId || '';
+  const [patientId, setPatientId] = useState(initialPatientId);
+  
 
   const [patientData, setPatientData] = useState(null);
 
   const [walkingData, setWalkingData] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(1); // 기본값을 1로 설정 (2번째 데이터부터 표시)
+  const [walkingIndex, setwalkingIndex] = useState(1); // 기본값을 1로 설정 (2번째 데이터부터 표시)
   
   const [fingerData, setFingerData] = useState([]);
+  const [fingerIndex, setFingerIndex] = useState(1);
 
   const [blinkData, setBlinkData] = useState([]); // 눈 깜빡임 데이터 상태 변수
 
@@ -45,8 +49,10 @@ function Dashboard({ token }) {
     }
 
     if (!patientId) {
-      alert('환자 ID가 필요합니다.');
-      navigate('/page2');
+      // setPatientData(null);
+      // setWalkingData([]);
+      // setFingerData([]);
+      // setBlinkData([]);
       return;
     }
 
@@ -96,6 +102,16 @@ function Dashboard({ token }) {
   }, [patientId, token, navigate]);
 
 
+  // 사이드 바 환자 정보 검색
+  const handleDashboardClick = () => {
+    if (patientData) {
+      navigate('/dashboard', { state: { patientId, patientData } });
+    } else {
+      alert('먼저 환자 정보를 검색해주세요.');
+    }
+  };
+
+
   const calculateChange = (current, previous, field) => {
     const difference = current[field] - previous[field];
     let percentage = previous[field] !== 0
@@ -105,21 +121,21 @@ function Dashboard({ token }) {
     return { difference, percentage };
   };
 
-  const handleFirst = () => setCurrentIndex(1);
-  const handleLast = () => setCurrentIndex(walkingData.length - 1);
+  const handleFirst = () => setwalkingIndex(1);
+  const handleLast = () => setwalkingIndex(walkingData.length - 1);
   const handleNext = () => {
-    if (currentIndex < walkingData.length - 1) {
-      setCurrentIndex(currentIndex + 1);
+    if (walkingIndex < walkingData.length - 1) {
+      setwalkingIndex(walkingIndex + 1);
     }
   };
   const handlePrevious = () => {
-    if (currentIndex > 1) {
-      setCurrentIndex(currentIndex - 1);
+    if (walkingIndex > 1) {
+      setwalkingIndex(walkingIndex - 1);
     }
   };
 
-  const current = walkingData[currentIndex];
-  const previous = currentIndex > 0 ? walkingData[currentIndex - 1] : null;
+  const current = walkingData[walkingIndex];
+  const previous = walkingIndex > 0 ? walkingData[walkingIndex - 1] : null;
 
   const stepChange = previous
     ? calculateChange(current, previous, 'step')
@@ -164,13 +180,44 @@ function Dashboard({ token }) {
     }
   };
 
+  // 왼손 및 오른손 평균 계산
+  const leftHandAverage =
+    fingerData
+      .filter((item) => item.hand === 'L')
+      .reduce((sum, item) => sum + item.count, 0) /
+    fingerData.filter((item) => item.hand === 'L').length || 0;
+
+  const rightHandAverage =
+    fingerData
+      .filter((item) => item.hand === 'R')
+      .reduce((sum, item) => sum + item.count, 0) /
+    fingerData.filter((item) => item.hand === 'R').length || 0;
+
+    
+    
+  
+    
+
   return (
     <div className="dashboard-container">
       {/* 사이드 바 */}
       <div className="sidebar">
-        <h2>환자 정보</h2>
+        <h1 id="name">환자 정보검색</h1>
+        <div className="search-container">
+          <input
+            type="text"
+            placeholder="환자 ID를 입력해주세요"
+            className="search-input"
+            value={patientId}
+            onChange={(e) => setPatientId(e.target.value)}
+          />
+          <button className="search-button" onClick={handleDashboardClick}>
+            <span role="img" aria-label="search">🔍</span>
+          </button>
+        </div>
         {patientData ? (
-          <div>
+          <div id="info">
+            <h2>환자 정보</h2>
             <p><strong>ID:</strong> {patientData.id}</p>
             <p><strong>이름:</strong> {patientData.name}</p>
             <p><strong>성별:</strong> {patientData.gender === 'M' ? '남성' : '여성'}</p>
@@ -195,21 +242,26 @@ function Dashboard({ token }) {
       
       
 
-      {/*1번째 손 터치 슬라이드 */}
+      {/*1번째 걷기 터치 슬라이드 */}
       <div className="main-panel">
-        <h1>걷기 운동</h1>
+        <h2 id="name">걷기 운동</h2>
         {current && (
           <div className="walking-group">
-            <h2>데이터 ID: {current.id}</h2>
+            <span style={{color: speedChange.percentage >= 0 ? 'green' : 'red', fontWeight: 'bold', fontSize: '2em',}}>
+            {speedChange.percentage >= 0 ? '▲' : '▼'}
+            {speedChange.percentage}%{' '}
+            </span>
             <p>걸음걸이 수 변화: {stepChange.difference} ({stepChange.percentage}%)</p>
-            <p>속도 변화: {speedChange.difference.toFixed(2)} m/m ({speedChange.percentage}%)</p>
-
+            <p>속도 변화: {Math.abs(speedChange.difference.toFixed(2))} m/m ({speedChange.percentage}%)</p>
+            <p>약 복용 후 시간: {' '}
+              {current.timeAfterTakingMedicine ? `${current.timeAfterTakingMedicine}분 경과` : '정보 없음'}
+            </p>
             <div className="thermometer">
               {/* 걸음 변화 바 */}
               <div
-                className={`thermometer-bar step ${stepChange.difference < 0 ? 'green' : 'red'}`}
+                className={`thermometer-bar step ${speedChange.difference < 0 ? 'red' : 'green'}`}
                 style={{
-                  height: `${Math.abs(stepChange.percentage)}%`,
+                  height: `${Math.abs(speedChange.percentage)}%`,
                 }}
               ></div>
 
@@ -228,10 +280,10 @@ function Dashboard({ token }) {
               <p><strong>현재 속도:</strong> {current.speed.toFixed(2)} m/m</p>
             </div>
             <div className="navigation-buttons">
-              <button onClick={handleFirst} disabled={currentIndex <= 1}>처음</button>
-              <button onClick={handlePrevious} disabled={currentIndex <= 1}>이전</button>
-              <button onClick={handleNext} disabled={currentIndex === walkingData.length - 1}>다음</button>
-              <button onClick={handleLast} disabled={currentIndex === walkingData.length - 1}>마지막</button>
+              <button onClick={handleFirst} disabled={walkingIndex <= 1}>{"<<"}</button>
+              <button onClick={handlePrevious} disabled={walkingIndex <= 1}>{"<"}</button>
+              <button onClick={handleNext} disabled={walkingIndex === walkingData.length - 1}>{">"}</button>
+              <button onClick={handleLast} disabled={walkingIndex === walkingData.length - 1}>{">>"}</button>
         </div>
 
           </div>
@@ -254,6 +306,8 @@ function Dashboard({ token }) {
                   borderColor: 'rgba(0, 0, 255, 0.5)',
                   backgroundColor: 'rgba(0, 0, 255, 0.1)',
                   yAxisID: 'y',
+                  fill : true,
+                  tension: 0.4,
                 },
                 {
                   label: '속도 (m/m)',
@@ -261,6 +315,8 @@ function Dashboard({ token }) {
                   borderColor: 'red',
                   backgroundColor: 'rgba(255, 0, 0, 0.1)',
                   yAxisID: 'y1',
+                  fill : true,
+                  tension: 0.4,
                 },
               ],
             }}
@@ -331,10 +387,75 @@ function Dashboard({ token }) {
             }}
           />
         </div>
+        <div className='chart2-walking'>
+          <h2>약 복용 후 시간에 따른 속도 변화</h2>
+          <Line
+            data={{
+              labels: walkingData
+                .filter((item) => item.timeAfterTakingMedicine !== undefined && item.timeAfterTakingMedicine !== null)
+                .sort((a, b) => a.timeAfterTakingMedicine - b.timeAfterTakingMedicine) // 시간에 따라 오름차순 정렬
+                .map((item) => item.timeAfterTakingMedicine), // x축: 약 복용 후 경과 시간 (분)
+              datasets: [
+                {
+                  label: '속도 (m/m)',
+                  data: walkingData
+                    .filter((item) => item.timeAfterTakingMedicine !== undefined && item.timeAfterTakingMedicine !== null)
+                    .sort((a, b) => a.timeAfterTakingMedicine - b.timeAfterTakingMedicine) // 동일한 정렬
+                    .map((item) => item.speed), // y축: 속도
+                      borderColor: 'blue',
+                      backgroundColor: 'rgba(0, 0, 255, 0.1)',
+                      fill: true,
+                      tension: 0.4,
+                },
+              ],
+            }}
+            options={{
+              responsive: true,
+              plugins: {
+                  legend: {
+                    position: 'top',
+                  },
+                tooltip: {
+                  callbacks: {
+                    title: function (context) {
+                      const index = context[0].dataIndex;
+                      const sortedData = walkingData
+                        .filter((item) => item.timeAfterTakingMedicine !== undefined && item.timeAfterTakingMedicine !== null)
+                        .sort((a, b) => a.timeAfterTakingMedicine - b.timeAfterTakingMedicine);
+                      const item = sortedData[index];
+                      return `약 복용 후 ${item.timeAfterTakingMedicine}분 경과`;
+                    },
+                    label: function (context) {
+                      return `속도: ${context.raw.toFixed(2)} m/m`;
+                    },
+                  },
+                },
+              },
+              scales: {
+                x: {
+                  title: {
+                    display: true,
+                    text: '약 복용 후 경과 시간 (분)',
+                  },
+                  ticks: {
+                    stepSize: 10, // x축 간격 설정 (필요에 따라 변경)
+                  },
+                },
+                y: {
+                  title: {
+                    display: true,
+                    text: '속도 (m/m)',
+                  },
+                },
+              },
+            }}
+          />
+        </div>
+        
       </div>
       {/* 2번째 손 터치 슬라이드 */}
       <div className='dashboard2'>
-      <h1>손가락 운동</h1>
+      <h2 id="name">손가락 운동</h2>
         <div className="finger-chart">
           <h2>양손별 터치변화 추이</h2>
             <Line
@@ -351,6 +472,8 @@ function Dashboard({ token }) {
                       .map((item) => item.count),
                     borderColor: 'red',
                     backgroundColor: 'rgba(255, 0, 0, 0.1)',
+                    fill : true,
+                    tension: 0.4,
                   }
                 ],
               }}
@@ -398,6 +521,8 @@ function Dashboard({ token }) {
                       display: true,
                       text: '터치 횟수',
                     },
+                    min: 0,
+                    max: 600,
                   },
                 },
               }}
@@ -416,6 +541,8 @@ function Dashboard({ token }) {
                       .map((item) => item.count),
                     borderColor: 'green',
                     backgroundColor: 'rgba(0, 255, 0, 0.1)',
+                    fill : true,
+                    tension: 0.4,
                   }
                 ],
               }}
@@ -463,16 +590,92 @@ function Dashboard({ token }) {
                       display: true,
                       text: '터치 횟수',
                     },
+                    min: 0,
+                    max: 600,
                   },
                 },
               }}
             />
         </div>
+        <div className='chart2-finger'>
+          <Scatter 
+            data={{
+              datasets: [
+                {
+                  label: '왼손',
+                  data: fingerData
+                    .filter((item) => item.hand === 'L')
+                    .map((item) => ({
+                      x: item.timeAfterTakingMedicine, // X축: 약 복용 후 경과 시간
+                      y: item.count, // Y축: 터치 횟수
+                    })),
+                  backgroundColor: 'rgba(255, 0, 0, 0.5)',
+                },
+                {
+                  label: '오른손',
+                  data: fingerData
+                    .filter((item) => item.hand === 'R')
+                    .map((item) => ({
+                      x: item.timeAfterTakingMedicine, // X축: 약 복용 후 경과 시간
+                      y: item.count, // Y축: 터치 횟수
+                    })),
+                  backgroundColor: 'rgba(0, 255, 0, 0.5)',
+                },
+                {
+                  label: '왼손 평균',
+                  data: [
+                    { x: Math.min(...fingerData.map(item => item.timeAfterTakingMedicine)), y: leftHandAverage },
+                    { x: Math.max(...fingerData.map(item => item.timeAfterTakingMedicine)), y: leftHandAverage },
+                  ],
+                  borderColor: 'red',
+                  borderWidth: 2,
+                  showLine: true, // 선만 표시
+                  pointRadius: 0, // 점 숨기기
+                },
+                {
+                  label: '오른손 평균',
+                  data: [
+                    { x: Math.min(...fingerData.map(item => item.timeAfterTakingMedicine)), y: rightHandAverage },
+                    { x: Math.max(...fingerData.map(item => item.timeAfterTakingMedicine)), y: rightHandAverage },
+                  ],
+                  borderColor: 'green',
+                  borderWidth: 2,
+                  showLine: true,
+                  pointRadius: 0,
+                },
+              ],
+            }}
+            options={{
+              responsive: true,
+              plugins: {
+                legend: {
+                  position: 'top',
+                },
+              },
+              scales: {
+                x: {
+                  title: {
+                    display: true,
+                    text: '약 복용 후 경과 시간 (분)',
+                  },
+                },
+                y: {
+                  title: {
+                    display: true,
+                    text: '터치 횟수',
+                  },
+                },
+              },
+              
+            }}
+          />
+
+        </div>
       </div>
       {/* 3번째 눈깜빡임 슬라이드 */}
       {/* 눈 깜빡임 데이터 그래프 */}
       <div className="dashboard3">
-        <h1>눈 깜빡임</h1>
+        <h2 id='name'>눈 깜빡임</h2>
         <div className='blink-chart'>
         <h2>눈 깜빡임 데이터</h2>
         <Line
@@ -487,6 +690,8 @@ function Dashboard({ token }) {
                 data: blinkData.map((item) => item.count),
                 borderColor: 'purple',
                 backgroundColor: 'rgba(128, 0, 128, 0.1)',
+                fill : true,
+                tension: 0.4,
               },
             ],
           }}
