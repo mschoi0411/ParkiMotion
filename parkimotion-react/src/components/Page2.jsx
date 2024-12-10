@@ -49,19 +49,23 @@ function Page2({ token }) {
 
   return (
     <div className="page2-container">
-      <h1>환자 검색</h1>
-      <div className="search-container">
-        <input
-          type="text"
-          placeholder="환자 ID를 입력해주세요"
-          className="search-input"
-          value={patientId}
-          onChange={(e) => setPatientId(e.target.value)}
-        />
-        <button className="search-button" onClick={handleSearch}>
-          <span role="img" aria-label="search">🔍</span>
-        </button>
-      </div>
+      <div className="search-card">
+      <div className="search-content">
+        <h1 className="search-name">환자 검색</h1>
+          <div className="search-container">
+            <div className="search-wrapper">
+              <input
+                type="text"
+                placeholder="환자 ID를 입력해주세요"
+                className="search-input"
+                value={patientId}
+                onChange={(e) => setPatientId(e.target.value)}
+              />
+              <button className="search-button" onClick={handleSearch}>
+                <span role="img" aria-label="search">🔍</span>
+              </button>
+            </div>
+          </div>
 
       {patientData && (
         <div className="patient-info">
@@ -75,9 +79,15 @@ function Page2({ token }) {
       )}
 
       {patientData && (
-        <button onClick={handleDashboardClick}>대시보드 보기</button>
+        <button className="go-dashbord" onClick={handleDashboardClick}>대시보드 보기</button>
       )}
+        </div>
+          <div className="search-image">
+          <img src= "/image/image2.jpg" alt="Team Illustration" />
+        </div>
+      </div>
     </div>
+    
   );
 }
 

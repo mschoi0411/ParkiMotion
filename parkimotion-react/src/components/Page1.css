@@ -9,28 +9,33 @@ html, body {
   width: 100%;
   height: 100%;
   font-family: 'Arial', sans-serif; /* 기본 폰트 */
-  background-color: #f0f4f8; /* 배경색 */
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #b5ced4
 }
+
 
 /* 전체 컨테이너 */
 .page1-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 100%;
+  height: 100vh;
+  width: 100vw;
 }
 
 /* 카드 스타일 */
 .info-card {
-  background-color: #ffffff; /* 흰색 배경 */
-  border-radius: 20px; /* 둥근 모서리 */
+  display: flex;
+  background-color: #ffffff; /* 투명한 흰색 */
+  backdrop-filter: blur(15px); /* 배경 흐림 효과 */
+  -webkit-backdrop-filter: blur(8px); /* 크로스 브라우징을 위한 설정 */
+  border-radius: 30px; /* 둥근 모서리 */
   padding: 40px 30px; /* 카드 내부 여백 */
-  width: 360px; /* 고정된 너비 */
-  max-width: 400px; /* 최대 너비 제한 */
+  width: 90vw; /* 고정된 너비 */
+  /* max-width: 1300px; 최대 너비 제한 */
+  height: 80vh;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -41,46 +46,76 @@ html, body {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* 호버 시 그림자 */
 }
 
+.info-content {
+  flex: 1; /* 왼쪽 영역 */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 세로 중앙 */
+  gap: 15px;
+}
+
+.info-image {
+  flex: 1; /* 오른쪽 영역 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.info-image img {
+  max-width: 85%;
+  height: auto;
+  border-radius: 8px;
+}
+
 /* 제목 스타일 */
-h1 {
-  font-size: 2.4rem; /* 제목 크기 */
-  color: #333; /* 진한 회색 */
-  margin-bottom: 20px;
+#teamname {
+  font-size: 4.5rem; /* 제목 크기 */
+  color: #093D62; /* 진한 회색 */
+  margin-bottom: 40px;
   word-break: keep-all; /* 단어가 끊기지 않도록 설정 */
 }
 
 /* 부제목 스타일 */
 .subtitle {
   font-size: 1.2rem; /* 부제목 크기 */
-  color: #555;
-  margin-bottom: 15px;
+  color: #383838e1;
+  align-self: flex-start; /* 세로 정렬 기준 위쪽으로 이동 */
+  margin-left: 20px;
+  margin-bottom:70px;
   word-break: keep-all; /* 단어가 끊기지 않도록 설정 */
 }
 
 /* 이름 및 정보 */
 .course {
   font-size: 1rem; /* 정보 텍스트 크기 */
-  color: #666; /* 약간 어두운 회색 */
+  color: #383838e1; /* 약간 어두운 회색 */
   margin: 15px 0;
+  margin-bottom: 30px;
   line-height: 1.6; /* 줄 간격 조정 */
   text-align: center; /* 텍스트를 중앙 정렬 */
 }
 
+/* 서버 설명 */
+.explain {
+  font-size: 0.9rem; /* 부제목 크기 */
+  color: #383838c9;
+
+}
+
 /* 버튼 스타일 */
 .connect-button {
-  background-color: #3498db; /* 파란색 */
-  color: white;
-  padding: 12px 25px;
-  border: none;
-  border-radius: 15px; /* 둥근 버튼 */
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  color: #ffffffeb; /* 흰색 글씨 */
+  font-size: 0.86rem;
+  background-color: #41A8A4;
+  width: 62%;
+  border-radius: 12px;
+  border: 2px solid transparent; /* 초기 테두리는 투명 */
+  transition: border-color 0.3s ease; /* 테두리 색상 변화에 애니메이션 적용 */
 }
 
 .connect-button:hover {
-  background-color: #2980b9; /* 어두운 파란색 */
-  box-shadow: 0 4px 12px rgba(41, 128, 185, 0.4); /* 호버 시 그림자 */
+  background-color: #41a8a5d1;
+  border-color: #ffffff7b; /* 마우스를 올렸을 때 테두리 색상 (예: 토마토색) */
 }
 
 .connect-button:focus {
@@ -94,9 +129,6 @@ h1 {
     padding: 30px;
   }
 
-  h1 {
-    font-size: 2rem; /* 제목 크기 축소 */
-  }
 
   .connect-button {
     padding: 10px 20px; /* 버튼 크기 조정 */
