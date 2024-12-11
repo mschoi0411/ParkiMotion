@@ -70,6 +70,7 @@ html, body {
 #teamname {
   font-size: 4.5rem; /* 제목 크기 */
   color: #093D62; /* 진한 회색 */
+  margin-top: 100px;
   margin-bottom: 40px;
   word-break: keep-all; /* 단어가 끊기지 않도록 설정 */
 }

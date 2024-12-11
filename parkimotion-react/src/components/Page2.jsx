@@ -196,7 +196,7 @@ function Page2({ token }) {
             <button className="go-dashbord" onClick={handleDashboardClick}>대시보드 보기</button>
           )}
         </div>
-        <div className="search-image">
+        <div className="search-image1">
           {genderData && (
             <div className="chart-container">
               <h2>전체 환자 성별 분포</h2>
@@ -221,7 +221,10 @@ function Page2({ token }) {
                 }}
               />
             </div>
+            
           )}
+          </div>
+          <div className="search-image2">
           {ageData && (
             <div className="chart-container">
               <h2>전체 환자 나이 분포</h2>
@@ -255,6 +258,7 @@ function Page2({ token }) {
                 }}
               />
             </div>
+            
           )}
           {!genderData && !ageData && (
             <img src={image2} alt="Team Illustration" />

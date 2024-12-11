@@ -632,8 +632,8 @@ function Dashboard({ token }) {
                 {
                   label: '걸음수',
                   data: walkingData.map((item) => item.step),
-                  borderColor: 'rgba(0, 0, 255, 0.5)',
-                  backgroundColor: 'rgba(0, 0, 255, 0.1)',
+                  borderColor: 'purple',
+                  backgroundColor: 'rgba(128, 0, 128, 0.1)',
                   yAxisID: 'y',
                   fill : true,
                   tension: 0.4,
@@ -735,8 +735,8 @@ function Dashboard({ token }) {
                     .filter((item) => item.timeAfterTakingMedicine !== undefined && item.timeAfterTakingMedicine !== null)
                     .sort((a, b) => a.timeAfterTakingMedicine - b.timeAfterTakingMedicine) // 동일한 정렬
                     .map((item) => item.speed), // y축: 속도
-                      borderColor: 'blue',
-                      backgroundColor: 'rgba(0, 0, 255, 0.1)',
+                      borderColor: 'purple',
+                      backgroundColor: 'rgba(128, 0, 128, 0.1)',
                       fill: true,
                       tension: 0.4,
                 },
@@ -967,8 +967,8 @@ function Dashboard({ token }) {
                     data: fingerData
                       .filter((item) => item.hand === 'R')
                       .map((item) => item.count),
-                    borderColor: 'green',
-                    backgroundColor: 'rgba(0, 255, 0, 0.3)',
+                    borderColor: 'purple',
+                    backgroundColor: 'rgba(128, 0, 128, 0.1)',
                     fill : 'origin',
                     tension: 0.4,
                   }
@@ -1031,7 +1031,7 @@ function Dashboard({ token }) {
         </div>
         <div className="chart-container">
         <div className='chart2-finger'>
-        <h2>양손별 터치변화 추이(이름수정)</h2>
+        <h2>약 복용 후 시간에 따른 터치 변화</h2>
           <Scatter 
             data={{
               datasets: [
@@ -1053,7 +1053,7 @@ function Dashboard({ token }) {
                       x: item.timeAfterTakingMedicine, // X축: 약 복용 후 경과 시간
                       y: item.count, // Y축: 터치 횟수
                     })),
-                  backgroundColor: 'rgba(0, 255, 0, 0.5)',
+                  backgroundColor: 'rgba(128, 0, 128, 0.5)',
                 },
                 {
                   data: [
@@ -1070,7 +1070,7 @@ function Dashboard({ token }) {
                     { x: Math.min(...fingerData.map(item => item.timeAfterTakingMedicine)), y: rightHandAverage },
                     { x: Math.max(...fingerData.map(item => item.timeAfterTakingMedicine)), y: rightHandAverage },
                   ],
-                  borderColor: 'green',
+                  borderColor: 'purple',
                   borderWidth: 2,
                   showLine: true,
                   pointRadius: 0,
